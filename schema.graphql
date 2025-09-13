@@ -15,7 +15,6 @@ type ProtocolStatistics @entity(immutable: false) {
 type UserInfo @entity(immutable: false) {
   id: Bytes!                   
   stakedAmount: BigInt!        
-  pendingRewards: BigInt!      
   rewardDebt: BigInt!          
   lastStakeTimestamp: BigInt! 
 
