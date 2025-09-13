@@ -1,17 +1,9 @@
 import { BigInt, Bytes } from "@graphprotocol/graph-ts";
 import {
   EmergencyWithdrawn as EmergencyWithdrawnEvent,
-  OwnershipTransferred as OwnershipTransferredEvent,
-  Paused as PausedEvent,
-  RewardRateUpdated as RewardRateUpdatedEvent,
   RewardsClaimed as RewardsClaimedEvent,
   Staked as StakedEvent,
-  StakingContract,
   StakingInitialized as StakingInitializedEvent,
-  StakingPaused as StakingPausedEvent,
-  StakingUnpaused as StakingUnpausedEvent,
-  TokenRecovered as TokenRecoveredEvent,
-  Unpaused as UnpausedEvent,
   Withdrawn as WithdrawnEvent,
 } from "../generated/StakingContract/StakingContract";
 import {
