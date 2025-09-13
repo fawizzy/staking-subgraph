@@ -6,8 +6,7 @@ import {
   StakingInitialized as StakingInitializedEvent,
   Withdrawn as WithdrawnEvent,
 } from "../generated/StakingContract/StakingContract";
-import { ProtocolStatistics } from "../generated/schema";
-import { loadOrCreateUserInfo } from "./utils";
+import { loadOrCreateProtocolStatistics, loadOrCreateUserInfo } from "./utils";
 
 export function handleEmergencyWithdrawn(event: EmergencyWithdrawnEvent): void {
   let userInfo = loadOrCreateUserInfo(event.params.user);
@@ -15,12 +14,10 @@ export function handleEmergencyWithdrawn(event: EmergencyWithdrawnEvent): void {
   userInfo.totalWithdrawn = userInfo.totalWithdrawn.plus(event.params.amount);
   userInfo.updatedAt = event.block.timestamp;
 
-  let protocolStatistics = ProtocolStatistics.load("1");
-  if (protocolStatistics) {
-    protocolStatistics.totalStaked = event.params.newTotalStaked;
-    protocolStatistics.save();
-  }
+  let protocolStatistics = loadOrCreateProtocolStatistics("1");
+  protocolStatistics.totalStaked = event.params.newTotalStaked;
 
+  protocolStatistics.save();
   userInfo.save();
 }
 
@@ -29,12 +26,10 @@ export function handleRewardsClaimed(event: RewardsClaimedEvent): void {
   userInfo.totalClaimed = userInfo.totalClaimed.plus(event.params.amount);
   userInfo.updatedAt = event.block.timestamp;
 
-  let protocolStatistics = ProtocolStatistics.load("1");
-  if (protocolStatistics) {
-    protocolStatistics.totalStaked = event.params.totalStaked;
-    protocolStatistics.save();
-  }
+  let protocolStatistics = loadOrCreateProtocolStatistics("1");
+  protocolStatistics.totalStaked = event.params.totalStaked;
 
+  protocolStatistics.save();
   userInfo.save();
 }
 
@@ -47,13 +42,11 @@ export function handleStaked(event: StakedEvent): void {
   }
   userInfo.updatedAt = event.block.timestamp;
 
-  let protocolStatistics = ProtocolStatistics.load("1");
-  if (protocolStatistics) {
-    protocolStatistics.totalStaked = event.params.newTotalStaked;
-    protocolStatistics.currentRewardRate = event.params.currentRewardRate;
-    protocolStatistics.save();
-  }
+  let protocolStatistics = loadOrCreateProtocolStatistics("1");
+  protocolStatistics.totalStaked = event.params.newTotalStaked;
+  protocolStatistics.currentRewardRate = event.params.currentRewardRate;
 
+  protocolStatistics.save();
   userInfo.save();
 }
 
@@ -63,21 +56,19 @@ export function handleWithdrawn(event: WithdrawnEvent): void {
   userInfo.totalWithdrawn = userInfo.totalWithdrawn.plus(event.params.amount);
   userInfo.updatedAt = event.block.timestamp;
 
-  let protocolStatistics = ProtocolStatistics.load("1");
-  if (protocolStatistics) {
-    protocolStatistics.totalStaked = event.params.newTotalStaked;
-    protocolStatistics.currentRewardRate = event.params.currentRewardRate;
-    protocolStatistics.save();
-  }
+  let protocolStatistics = loadOrCreateProtocolStatistics("1");
+  protocolStatistics.totalStaked = event.params.newTotalStaked;
+  protocolStatistics.currentRewardRate = event.params.currentRewardRate;
 
+  protocolStatistics.save();
   userInfo.save();
 }
 
 export function handleStakingInitialized(event: StakingInitializedEvent): void {
-  let protocolStatistics = new ProtocolStatistics("1");
+  let protocolStatistics = loadOrCreateProtocolStatistics("1");
+
   protocolStatistics.initialApr = event.params.initialRewardRate;
   protocolStatistics.currentRewardRate = event.params.initialRewardRate;
-
   protocolStatistics.totalStaked = BigInt.zero();
   protocolStatistics.totalUsers = BigInt.zero();
 

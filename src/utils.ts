@@ -1,5 +1,6 @@
 import { BigInt, Bytes } from "@graphprotocol/graph-ts";
 import { UserInfo, ProtocolStatistics } from "../generated/schema";
+import { StakingInitialized } from "../generated/StakingContract/StakingContract";
 
 export function loadOrCreateUserInfo(address: Bytes): UserInfo {
   let userInfo = UserInfo.load(address);
@@ -11,14 +12,27 @@ export function loadOrCreateUserInfo(address: Bytes): UserInfo {
     userInfo.stakedAmount = BigInt.zero();
     userInfo.save();
 
-    let protocolStats = ProtocolStatistics.load("1");
-   if (protocolStats){
+    let protocolStats = loadOrCreateProtocolStatistics("1");
     protocolStats.totalUsers = protocolStats.totalUsers.plus(BigInt.fromI32(1));
+ 
     protocolStats.save();
-
-   } 
-    
   }
 
   return userInfo;
+}
+
+export function loadOrCreateProtocolStatistics(id: string) {
+  let protocolStatistics = ProtocolStatistics.load(id);
+  if (!protocolStatistics) {
+    protocolStatistics = new ProtocolStatistics(id);
+    protocolStatistics.initialApr = BigInt.zero();
+    protocolStatistics.currentRewardRate = BigInt.zero();
+
+    protocolStatistics.totalStaked = BigInt.zero();
+    protocolStatistics.totalUsers = BigInt.zero();
+
+    protocolStatistics.save();
+  }
+
+  return protocolStatistics;
 }
