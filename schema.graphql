@@ -1,15 +1,29 @@
-type ProtocolStatitics @entity(immutable: false) {
-  id: ID!
-  totalStaked: BigInt!
-  initialApr: BigInt!
-  currentRewardRate: BigInt!
-  minLockDuration: BigInt!
-  aprReductionPerThousand: BigInt!
+
+type ProtocolStatistics @entity(immutable: false) {
+  id: ID!                     
+  totalStaked: BigInt!         
+  initialApr: BigInt!          
+  currentRewardRate: BigInt!  
+
+  totalRewards: BigInt!        
+  totalUsers: BigInt!          
 }
 
+
+
+
 type UserInfo @entity(immutable: false) {
-  id: Bytes!
-  stakedAmount: BigInt!
-  pendingRewards: BigInt!
-  lastStake: BigInt!
+  id: Bytes!                   
+  stakedAmount: BigInt!        
+  pendingRewards: BigInt!      
+  rewardDebt: BigInt!          
+  lastStakeTimestamp: BigInt! 
+
+
+  totalClaimed: BigInt!        
+  totalWithdrawn: BigInt!      
+  createdAt: BigInt!           
+  updatedAt: BigInt!           
+  
 }
+
