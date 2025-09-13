@@ -12,7 +12,6 @@ import { loadOrCreateUserInfo } from "./utils";
 export function handleEmergencyWithdrawn(event: EmergencyWithdrawnEvent): void {
   let userInfo = loadOrCreateUserInfo(event.params.user);
   userInfo.stakedAmount = BigInt.zero();
-  userInfo.pendingRewards = BigInt.zero();
   userInfo.totalWithdrawn = userInfo.totalWithdrawn.plus(event.params.amount);
   userInfo.updatedAt = event.block.timestamp;
 
@@ -27,7 +26,6 @@ export function handleEmergencyWithdrawn(event: EmergencyWithdrawnEvent): void {
 
 export function handleRewardsClaimed(event: RewardsClaimedEvent): void {
   let userInfo = loadOrCreateUserInfo(event.params.user);
-  userInfo.pendingRewards = event.params.newPendingRewards;
   userInfo.totalClaimed = userInfo.totalClaimed.plus(event.params.amount);
   userInfo.updatedAt = event.block.timestamp;
 
@@ -62,7 +60,6 @@ export function handleStaked(event: StakedEvent): void {
 export function handleWithdrawn(event: WithdrawnEvent): void {
   let userInfo = loadOrCreateUserInfo(event.params.user);
   userInfo.stakedAmount = userInfo.stakedAmount.minus(event.params.amount);
-  userInfo.pendingRewards = event.params.rewardsAccrued;
   userInfo.totalWithdrawn = userInfo.totalWithdrawn.plus(event.params.amount);
   userInfo.updatedAt = event.block.timestamp;
 
