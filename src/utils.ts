@@ -23,11 +23,11 @@ export function loadOrCreateUserInfo(address: Bytes): UserInfo {
 
 export function loadOrCreateProtocolStatistics(id: string) {
   let protocolStatistics = ProtocolStatistics.load(id);
+  
   if (!protocolStatistics) {
     protocolStatistics = new ProtocolStatistics(id);
     protocolStatistics.initialApr = BigInt.zero();
     protocolStatistics.currentRewardRate = BigInt.zero();
-
     protocolStatistics.totalStaked = BigInt.zero();
     protocolStatistics.totalUsers = BigInt.zero();
 
