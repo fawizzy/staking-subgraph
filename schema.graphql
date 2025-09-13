@@ -118,3 +118,19 @@ type Withdrawn @entity(immutable: true) {
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 }
+
+type ProtocolStatitics @entity(immutable: false) {
+  id: ID!
+  totalStaked: BigInt!
+  initialApr: BigInt!
+  currentRewardRate: BigInt!
+  minLockDuration: BigInt!
+  aprReductionPerThousand: BigInt!
+}
+
+type UserInfo @entity(immutable: false) {
+  id: Bytes!
+  stakedAmount: BigInt!
+  pendingRewards: BigInt!
+  lastStake: BigInt!
+}
